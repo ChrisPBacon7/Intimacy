@@ -26,7 +26,9 @@ def generate_pdf(invoice: Invoice) -> str:
     html_out = template.render(invoice=invoice)
 
     # Define output path
-    file_name = f"Rechnung_{invoice.id}_{invoice.customer_name.replace(' ', '_')}.pdf"
+    # Replace slashes or illegal chars in invoice_number to be safe for filenames
+    safe_invoice_no = str(invoice.invoice_number).replace('/', '-').replace('\\', '-')
+    file_name = f"Rechnung_{safe_invoice_no}_{invoice.customer_name.replace(' ', '_')}.pdf"
     file_path = os.path.join(OUTPUT_DIR, file_name)
 
     # Generate PDF

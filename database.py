@@ -11,6 +11,7 @@ class PaymentMethod(str, Enum):
 
 class Invoice(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+    invoice_number: str
     customer_name: str
     customer_address: str
     service_description: str

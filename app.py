@@ -30,7 +30,7 @@ if invoices:
 else:
     # Empty DataFrame with correct columns
     df = pd.DataFrame(columns=[
-        "id", "customer_name", "customer_address", "service_description",
+        "id", "invoice_number", "customer_name", "customer_address", "service_description",
         "total_amount", "down_payment", "down_payment_method",
         "final_payment_method", "payment_notes", "invoice_date", "pdf_generated"
     ])
@@ -42,6 +42,7 @@ if not df.empty:
 # Configure columns for Streamlit data editor
 column_config = {
     "id": st.column_config.NumberColumn("ID", disabled=True),
+    "invoice_number": st.column_config.TextColumn("Invoice No.", required=True),
     "customer_name": "Customer Name",
     "customer_address": "Customer Address",
     "service_description": "Service Description",
@@ -61,7 +62,7 @@ edited_df = st.data_editor(
     column_config=column_config,
     use_container_width=True,
     column_order=[
-        "customer_name", "customer_address", "service_description",
+        "invoice_number", "customer_name", "customer_address", "service_description",
         "total_amount", "down_payment", "down_payment_method",
         "final_payment_method", "payment_notes", "invoice_date", "pdf_generated"
     ], # ID hidden
