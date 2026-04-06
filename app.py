@@ -32,7 +32,7 @@ else:
     df = pd.DataFrame(columns=[
         "id", "customer_name", "customer_address", "service_description",
         "total_amount", "down_payment", "down_payment_method",
-        "final_payment_method", "invoice_date", "pdf_generated"
+        "final_payment_method", "payment_notes", "invoice_date", "pdf_generated"
     ])
 
 # Ensure datetime for invoice_date
@@ -49,6 +49,7 @@ column_config = {
     "down_payment": st.column_config.NumberColumn("Down Payment (€)", default=50.0, min_value=0.0, format="%.2f"),
     "down_payment_method": st.column_config.SelectboxColumn("Down Payment Method", options=[e.value for e in PaymentMethod], default=PaymentMethod.TRANSFER.value),
     "final_payment_method": st.column_config.SelectboxColumn("Final Payment Method", options=[e.value for e in PaymentMethod], default=PaymentMethod.CASH.value),
+    "payment_notes": "Payment Notes (e.g. Belegnr.)",
     "invoice_date": st.column_config.DateColumn("Date"),
     "pdf_generated": st.column_config.CheckboxColumn("PDF Generated?", disabled=True)
 }
@@ -62,7 +63,7 @@ edited_df = st.data_editor(
     column_order=[
         "customer_name", "customer_address", "service_description",
         "total_amount", "down_payment", "down_payment_method",
-        "final_payment_method", "invoice_date", "pdf_generated"
+        "final_payment_method", "payment_notes", "invoice_date", "pdf_generated"
     ], # ID hidden
     key="invoice_editor"
 )

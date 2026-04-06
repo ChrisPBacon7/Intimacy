@@ -18,6 +18,7 @@ class Invoice(SQLModel, table=True):
     down_payment: float = Field(default=50.0)
     down_payment_method: str = Field(default=PaymentMethod.TRANSFER.value)
     final_payment_method: str = Field(default=PaymentMethod.CASH.value)
+    payment_notes: str = Field(default="")
     invoice_date: date = Field(default_factory=date.today)
     pdf_generated: bool = Field(default=False)
 

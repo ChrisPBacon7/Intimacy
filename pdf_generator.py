@@ -3,8 +3,16 @@ from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML
 from database import Invoice
 
+import re
+
 # Setup Jinja2 environment
 env = Environment(loader=FileSystemLoader("templates"))
+
+def regex_replace(s, find, replace):
+    return re.sub(find, replace, s)
+
+env.filters['regex_replace'] = regex_replace
+
 template = env.get_template("invoice.html")
 
 OUTPUT_DIR = "invoices"

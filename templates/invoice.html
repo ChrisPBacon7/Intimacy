@@ -6,7 +6,7 @@
     <style>
         @page {
             size: A4;
-            margin: 20mm;
+            margin: 15mm;
         }
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -138,7 +138,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" style="font-size: 10px; text-align: right; padding-top: 0; color: #555;">
-                        (Bezahlt: {{ invoice.down_payment_method }})
+                        (Bezahlt: {{ invoice.down_payment_method | regex_replace('^[0-9]\.\s*', '') }})
                     </td>
                 </tr>
                 <tr>
@@ -147,13 +147,16 @@
                 </tr>
                 <tr>
                     <td colspan="2" style="font-size: 10px; text-align: right; padding-top: 0; color: #555;">
-                        (Zahlungsart Restbetrag: {{ invoice.final_payment_method }})
+                        (Zahlungsart Restbetrag: {{ invoice.final_payment_method | regex_replace('^[0-9]\.\s*', '') }})
                     </td>
                 </tr>
             </table>
         </div>
 
         <div style="margin-top: 40px; clear: both;">
+            {% if invoice.payment_notes %}
+            <p><strong>Zahlungshinweise / Belegnummer:</strong> {{ invoice.payment_notes }}</p>
+            {% endif %}
             <p><strong>Hinweis zur Kleinunternehmerregelung:</strong></p>
             <p>Gemäß § 19 UStG wird keine Umsatzsteuer berechnet und ausgewiesen.</p>
         </div>
