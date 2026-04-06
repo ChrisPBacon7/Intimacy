@@ -82,6 +82,18 @@ if st.button("Save Changes to Database"):
     # Update or Create rows
     for index, row in edited_df.iterrows():
         row_dict = row.to_dict()
+
+        # Ensure invoice_date is a python date object
+        if 'invoice_date' in row_dict and isinstance(row_dict['invoice_date'], str):
+            try:
+                row_dict['invoice_date'] = pd.to_datetime(row_dict['invoice_date']).date()
+            except:
+                pass
+        elif 'invoice_date' in row_dict and pd.notna(row_dict['invoice_date']) and hasattr(row_dict['invoice_date'], 'date'):
+            # It might be a Timestamp
+            if hasattr(row_dict['invoice_date'], 'to_pydatetime'):
+                row_dict['invoice_date'] = row_dict['invoice_date'].to_pydatetime().date()
+
         if pd.isna(row_dict.get('id')): # New row
             new_inv = Invoice(**{k: v for k, v in row_dict.items() if k != 'id' and not pd.isna(v)})
             session.add(new_inv)
