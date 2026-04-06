@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Rechnung #{{ invoice.id }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+        .container {
+            width: 100%;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo-placeholder {
+            width: 150px;
+            height: 150px;
+            background-color: #f0f0f0;
+            border: 1px dashed #ccc;
+            margin: 0 auto;
+            line-height: 150px;
+            color: #aaa;
+            font-weight: bold;
+        }
+        .business-info {
+            text-align: right;
+            margin-bottom: 40px;
+        }
+        .customer-info {
+            margin-bottom: 40px;
+        }
+        .invoice-details {
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f8f8;
+            font-weight: bold;
+        }
+        .totals-table {
+            width: 50%;
+            float: right;
+        }
+        .totals-table th, .totals-table td {
+            border: none;
+            padding: 5px;
+        }
+        .totals-table tr:last-child th, .totals-table tr:last-child td {
+            font-weight: bold;
+            font-size: 16px;
+            border-top: 2px solid #333;
+        }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .footer {
+            margin-top: 50px;
+            font-size: 12px;
+            text-align: center;
+            color: #777;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- Space for logo -->
+            <div class="logo-placeholder">LOGO INTEL/PLACEHOLDER</div>
+            <h1>Rechnung</h1>
+        </div>
+
+        <div class="business-info">
+            <strong>Intimacy Tattoo</strong><br>
+            Musterstraße 1<br>
+            12345 Musterstadt<br>
+            Email: kontakt@intimacy-tattoo.de
+        </div>
+
+        <div class="customer-info">
+            <strong>Rechnung an:</strong><br>
+            {{ invoice.customer_name }}<br>
+            {{ invoice.customer_address | replace('\n', '<br>') | safe }}
+        </div>
+
+        <div class="invoice-details">
+            <strong>Rechnungsnummer:</strong> #{{ invoice.id }}<br>
+            <strong>Datum:</strong> {{ invoice.invoice_date.strftime('%d.%m.%Y') }}
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Beschreibung</th>
+                    <th style="text-align: right;">Betrag</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ invoice.service_description }}</td>
+                    <td style="text-align: right;">{{ "%.2f"|format(invoice.total_amount) }} €</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="clearfix">
+            <table class="totals-table">
+                <tr>
+                    <th>Gesamtbetrag:</th>
+                    <td style="text-align: right;">{{ "%.2f"|format(invoice.total_amount) }} €</td>
+                </tr>
+                <tr>
+                    <th>Anzahlung:</th>
+                    <td style="text-align: right;">- {{ "%.2f"|format(invoice.down_payment) }} €</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="font-size: 10px; text-align: right; padding-top: 0; color: #555;">
+                        (Bezahlt: {{ invoice.down_payment_method }})
+                    </td>
+                </tr>
+                <tr>
+                    <th>Zu zahlen / Bezahlt:</th>
+                    <td style="text-align: right;">{{ "%.2f"|format(invoice.total_amount - invoice.down_payment) }} €</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="font-size: 10px; text-align: right; padding-top: 0; color: #555;">
+                        (Zahlungsart Restbetrag: {{ invoice.final_payment_method }})
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="margin-top: 40px; clear: both;">
+            <p><strong>Hinweis zur Kleinunternehmerregelung:</strong></p>
+            <p>Gemäß § 19 UStG wird keine Umsatzsteuer berechnet und ausgewiesen.</p>
+        </div>
+
+        <div class="footer">
+            Intimacy Tattoo | Musterstraße 1, 12345 Musterstadt | Steuernummer: 12/345/67890
+        </div>
+    </div>
+</body>
+</html>

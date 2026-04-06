@@ -1,0 +1,15 @@
+[project]
+name = "app"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "google-labs-jules[bot]", email = "161369871+google-labs-jules[bot]@users.noreply.github.com"},
+]
+dependencies = ["streamlit>=1.56.0", "sqlmodel>=0.0.38", "weasyprint>=68.1", "jinja2>=3.1.6", "pandas>=3.0.2"]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
